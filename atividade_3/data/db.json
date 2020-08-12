@@ -1,0 +1,28 @@
+{
+  "disciplinas": [
+    {
+      "id": 1,
+      "nome": "fup",
+      "curso": "es",
+      "capacidade": 50
+    },
+    {
+      "id": 2,
+      "nome": "pds",
+      "curso": "es",
+      "capacidade": 30
+    },
+    {
+      "nome": "estrutura de dados",
+      "curso": "es",
+      "capacidade": "25",
+      "id": 3
+    },
+    {
+      "nome": "gc",
+      "curso": "es",
+      "capacidade": "30",
+      "id": 4
+    }
+  ]
+}
