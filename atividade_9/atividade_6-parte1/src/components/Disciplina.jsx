@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 //import axios from 'axios'
 
 import FirebaseContext from '../utils/FirebaseContext'
+import FirebaseService from '../services/FirebaseService'
+
 
 const DisciplinaPage = () => (
     <FirebaseContext.Consumer>
@@ -47,37 +49,23 @@ class Disciplina extends Component {
 
         e.preventDefault() //impede que o browser faça o reload, perdendo assim a informação
 
-        this.props.firebase.getFirestore().collection('disciplinas').add(
-            {
-                nome: this.state.nome,
-                curso: this.state.curso,
-                capacidade: this.state.capacidade
-            }
-        )
-            .then(() => console.log(`Disciplina ${this.state.nome} inserido com sucesso.`))
-            .catch(error => console.log(error))
+        const disciplina = {
+            nome: this.state.nome,
+            curso: this.state.curso,
+            capacidade: this.state.capacidade
+        }
 
-        // const novaDisciplina = {
-        //     nome: this.state.nome,
-        //     curso: this.state.curso,
-        //     capacidade: this.state.capacidade
-        // }
-        // //conceito de promeses
-        // //axios.post('http://localhost:3001/disciplinas', novaDisciplina)//se uma disciplina foi inserida com sucesso entra no then
-        // axios.post('http://localhost:3002/disciplinas/register', novaDisciplina)
-        //     .then(
-        //         (res) => {
-        //             console.log('disciplina inserida com sucesso')
-        //         }
-        //     )
-        //     .catch(
-        //         (error) => {
-        //             console.log(error)
-        //         }
-        //     )
+        FirebaseService.disciplina(
+            this.props.firebase.getFirestore(),
+            (mensagem) => {
+                if (mensagem === 'ok') {
+                    console.log(`Disciplina ${disciplina.nome} inserida`)
+                }
+            },
+            disciplina
+        )
 
         this.setState({ nome: '', curso: '', capacidade: '' })
-
     }
     /* teste para ver se o estado esta sendo alterado */
     // <h1>{this.state.nome}</h1> 

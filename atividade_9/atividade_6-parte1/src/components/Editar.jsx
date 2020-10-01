@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 //import axios from 'axios'
 
 import FirebaseContext from '../utils/FirebaseContext'
+import FirebaseService from '../services/FirebaseService'
 
 const EditarPage = (props) => (
     <FirebaseContext.Consumer>
@@ -43,65 +44,42 @@ class Edit extends Component {
     }
 
     componentDidMount() {
-        this.props.firebase.getFirestore().collection('disciplinas').doc(this.props.id).get()
-            .then(
-                (doc) => {
-                    this.setState(
-                        {
-                            nome: doc.data().nome,
-                            curso: doc.data().curso,
-                            capacidade: doc.data().capacidade
-                        }
-                    )
+        FirebaseService.retrieve(
+            this.props.firebase.getFirestore(),
+            (disciplina) => {
+                if (disciplina) {
+                    this.setState({
+                        nome: disciplina.nome,
+                        curso: disciplina.curso,
+                        capacidade: disciplina.capacidade
+                    })
                 }
-            )
-            .catch(error => console.log(error))
-        // axios.get('http://localhost:3002/disciplinas/retrieve/' + this.props.match.params.id) //express
-        //     //axios.get('http://localhost:3001/disciplinas/' + this.props.match.params.id) //json-server
-        //     .then(
-        //         (res) => {
-        //             this.setState(
-        //                 {
-        //                     nome: res.data.nome,
-        //                     curso: res.data.curso,
-        //                     capacidade: res.data.capacidade
-        //                 }
-        //             )
-        //         }
-        //     )
-        //     .catch(error => console.log(error))
+            },
+            this.props.id
+        )
     }
 
     onSubmit(e) {
 
         e.preventDefault()
 
-        this.props.firebase.getFirestore().collection('disciplinas').doc(this.props.id).set(
-            {
-                nome: this.state.nome,
-                curso: this.state.curso,
-                capacidade: this.state.capacidade
-            }
+        const disciplina = {
+            nome: this.state.nome,
+            curso: this.state.curso,
+            capacidade: this.state.capacidade
+        }
+
+        FirebaseService.edit(
+            this.props.firebase.getFirestore(),
+            (mensagem) => {
+                if (mensagem === 'ok') {
+                    console.log(`disciplina inserida`)
+                }
+            },
+            disciplina,
+            this.props.id
         )
-            .then(() => {
-                console.log('disciplina atualizada')
-            })
-            .catch((error) => { console.log(error) })
-
-        // const disciplinaEditada = {
-        //     nome: this.state.nome,
-        //     curso: this.state.curso,
-        //     capacidade: this.state.capacidade
-        // }
-        // axios.put('http://localhost:3002/disciplinas/update/' + this.props.match.params.id, disciplinaEditada) // express
-
-        //     //axios.put('http://localhost:3001/disciplinas/' + this.props.match.params.id, disciplinaEditada) // json-server 
-        //     .then(
-        //         (res) => {
-        //             this.props.history.push('/list');
-        //         }
-        //     )
-        //     .catch(error => console.log(error))
+        this.setState({ nome: '', curso: '', capacidade: '' })
     }
 
     render() {
