@@ -9,7 +9,12 @@ import PokemonInfo from './components/PokemonInfo'
 export default class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { id: 70 }
+    this.state = { id: 3 }
+    this.setId = this.setId.bind(this)
+  }
+
+  setId(novoId) {
+    this.setState({ id: novoId })
   }
 
   render() {
@@ -19,7 +24,7 @@ export default class App extends Component {
           calculadora-redux
         </h1>
         <div className='line'>
-          <Navigate id={this.state.id} />
+          <Navigate id={this.state.id} setId={this.setId} />
         </div>
         <div className='line'>
           <PokemonFront id={this.state.id} />

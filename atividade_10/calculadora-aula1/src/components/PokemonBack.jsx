@@ -5,7 +5,7 @@ export default class PokemonBack extends Component {
     render() {
         const url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${this.props.id}.png`
         return (
-            <Card title='Multiplicação' green>
+            <Card title='Costas-Multiplicação' green>
                 <img src={url} alt={this.props.id} />
             </Card >
         )
