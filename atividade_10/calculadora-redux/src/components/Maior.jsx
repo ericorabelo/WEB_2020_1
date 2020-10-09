@@ -42,6 +42,7 @@ class Maior extends Component {
 }
 
 
+
 function mapStateToProps(state) {
     return {
         id: state.pokemonId.id,
